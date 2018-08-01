@@ -1,4 +1,4 @@
-package omnifi.co.uk.explistviewgroupsvisible
+package omnifi.co.uk.explistviewgroupsvisible.ui
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -6,6 +6,8 @@ import android.util.Log
 import android.view.View
 import android.view.ViewTreeObserver
 import kotlinx.android.synthetic.main.activity_main.*
+import omnifi.co.uk.explistviewgroupsvisible.R
+import omnifi.co.uk.explistviewgroupsvisible.model.Constants
 
 
 class MainActivity : AppCompatActivity() {
@@ -37,8 +39,6 @@ class MainActivity : AppCompatActivity() {
         screenHeight = container.height
         groupHeight = past.height
         Constants.DISTANCE = (((screenHeight - (groupHeight * 4)) - resources.getDimension(R.dimen.activity_vertical_margin)).toInt())
-
-        Log.d("Testing", "onCreate: screenHeight = $screenHeight; groupHeight = $groupHeight; distance = ${Constants.DISTANCE}")
     }
 
     private fun setOnClickListeners() {

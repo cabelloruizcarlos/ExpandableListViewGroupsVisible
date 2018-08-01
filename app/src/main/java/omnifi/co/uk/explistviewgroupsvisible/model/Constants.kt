@@ -1,4 +1,4 @@
-package omnifi.co.uk.explistviewgroupsvisible
+package omnifi.co.uk.explistviewgroupsvisible.model
 
 object Constants {
 

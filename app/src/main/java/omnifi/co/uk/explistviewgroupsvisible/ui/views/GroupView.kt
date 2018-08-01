@@ -1,11 +1,10 @@
-package omnifi.co.uk.explistviewgroupsvisible
+package omnifi.co.uk.explistviewgroupsvisible.ui.views
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import android.view.ViewTreeObserver
 import android.widget.TextView
-
+import omnifi.co.uk.explistviewgroupsvisible.model.Constants
 
 class GroupView @JvmOverloads constructor(context: Context,
                                           attributeSet: AttributeSet? = null,
@@ -17,7 +16,6 @@ class GroupView @JvmOverloads constructor(context: Context,
     var state: Constants.ListState = Constants.ListState.UP
         set(value) {
             field = value
-Log.d("Testing", "${this.text}: positions($originalPosition,$expandedPosition)")
 
             when (value) {
                 Constants.ListState.UP -> {
@@ -42,7 +40,6 @@ Log.d("Testing", "${this.text}: positions($originalPosition,$expandedPosition)")
 
                 originalPosition = view.y
                 expandedPosition = view.y + Constants.DISTANCE
-                Log.d("Testing","${view.text}: setting positions($originalPosition,$expandedPosition)")
                 view.viewTreeObserver.removeOnGlobalLayoutListener(this)
             }
         })
