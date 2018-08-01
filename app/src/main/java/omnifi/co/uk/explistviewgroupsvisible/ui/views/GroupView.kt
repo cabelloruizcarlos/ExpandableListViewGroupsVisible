@@ -1,28 +1,40 @@
 package omnifi.co.uk.explistviewgroupsvisible.ui.views
 
+import android.animation.Animator
 import android.content.Context
+import android.support.v7.widget.LinearLayoutManager
 import android.util.AttributeSet
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.View.OnClickListener
 import android.view.ViewTreeObserver
-import android.widget.TextView
+import android.widget.RelativeLayout
+import kotlinx.android.synthetic.main.view_group.view.*
+import omnifi.co.uk.explistviewgroupsvisible.R
 import omnifi.co.uk.explistviewgroupsvisible.model.Constants
+import omnifi.co.uk.explistviewgroupsvisible.ui.GroupViewAdapter
 
 class GroupView @JvmOverloads constructor(context: Context,
                                           attributeSet: AttributeSet? = null,
                                           defStyleAttr: Int = 0) :
-        TextView(context, attributeSet, defStyleAttr) {
+        RelativeLayout(context, attributeSet, defStyleAttr) {
 
     var originalPosition = -1.0f
     var expandedPosition = -1.0f
     var state: Constants.ListState = Constants.ListState.UP
         set(value) {
-            field = value
-
             when (value) {
                 Constants.ListState.UP -> {
-                    this.animate()
-                            .y(originalPosition)
-                            .setDuration(Constants.ANIMATION_DURATION)
-                            .start()
+                    if (field == Constants.ListState.DOWN)
+                        this.animate()
+                                .y(originalPosition)
+                                .setDuration(Constants.ANIMATION_DURATION)
+                                .start()
+                    if (groupview_list.visibility == View.VISIBLE) {
+                        Log.d("Testing", "state.setter: Hiding the list")
+                        hideList()
+                    }
                 }
                 Constants.ListState.DOWN -> {
                     this.animate()
@@ -31,9 +43,14 @@ class GroupView @JvmOverloads constructor(context: Context,
                             .start()
                 }
             }
+            field = value
         }
 
     init {
+        LayoutInflater.from(context).inflate(R.layout.view_group, this, true)
+
+        groupview_list.layoutManager = LinearLayoutManager(context)
+
         val view = this
         view.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
             override fun onGlobalLayout() {
@@ -44,4 +61,26 @@ class GroupView @JvmOverloads constructor(context: Context,
             }
         })
     }
+
+    fun setTitle(title: String) {
+        groupview_title.text = title
+    }
+
+    fun setAdapter(adapter: GroupViewAdapter?) {
+        groupview_list.adapter = adapter
+    }
+
+    fun showList() {
+        groupview_list.visibility = View.VISIBLE
+    }
+
+    fun hideList() {
+        groupview_list.visibility = View.GONE
+    }
+
+    fun isListOpened(): Boolean {
+        return groupview_list.visibility == View.VISIBLE
+    }
+
+    /* LISTENERS */
 }

@@ -8,6 +8,6 @@ object Constants {
 
     /* ANIMATION VALUES */
 
-    const val ANIMATION_DURATION: Long = 1000
+    const val ANIMATION_DURATION: Long = 75
     var DISTANCE =-1
 }
