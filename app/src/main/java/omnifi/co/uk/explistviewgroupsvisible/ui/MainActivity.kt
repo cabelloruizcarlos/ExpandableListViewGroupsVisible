@@ -2,7 +2,6 @@ package omnifi.co.uk.explistviewgroupsvisible.ui
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import android.view.View
 import android.view.ViewTreeObserver
 import kotlinx.android.synthetic.main.activity_main.*
@@ -26,8 +25,13 @@ class MainActivity : AppCompatActivity() {
             override fun onGlobalLayout() {
 
                 setVariables()
-                if ((screenHeight > 0) && (groupHeight > 0))
-                    setOnClickListeners()
+
+                if ((screenHeight > 0) && (groupHeight > 0)) {
+                    today.setOnClickListener(onclickListener)
+                    tomorrow.setOnClickListener(onclickListener)
+                    future.setOnClickListener(onclickListener)
+                    past.setOnClickListener(onclickListener)
+                }
 
                 container.viewTreeObserver.removeOnGlobalLayoutListener(this)
             }
@@ -41,37 +45,36 @@ class MainActivity : AppCompatActivity() {
         Constants.DISTANCE = (((screenHeight - (groupHeight * 4)) - resources.getDimension(R.dimen.activity_vertical_margin)).toInt())
     }
 
-    private fun setOnClickListeners() {
 
-        val onclickListener = View.OnClickListener {
-            colapseAll()
 
-            when (it.id) {
-                R.id.today -> {
-                    // Expand the Today's walks list
-                    tomorrow.state = Constants.ListState.DOWN
-                    future.state = Constants.ListState.DOWN
-                    past.state = Constants.ListState.DOWN
-                }
-                R.id.tomorrow -> {
-                    // Expand the Tomorrow's walks list
-                    future.state = Constants.ListState.DOWN
-                    past.state = Constants.ListState.DOWN
-                }
-                R.id.future -> {
-                    // Expand the Future walks list
-                    past.state = Constants.ListState.DOWN
-                }
-                R.id.past -> {
-                    // Expand the Past walks list
-                }
+    /* LISTENERS */
+
+    private val onclickListener = View.OnClickListener {
+        colapseAll()
+
+        when (it.id) {
+            R.id.today -> {
+                // Expand the Today's walks list
+                tomorrow.state = Constants.ListState.DOWN
+                future.state = Constants.ListState.DOWN
+                past.state = Constants.ListState.DOWN
+            }
+            R.id.tomorrow -> {
+                // Expand the Tomorrow's walks list
+                future.state = Constants.ListState.DOWN
+                past.state = Constants.ListState.DOWN
+            }
+            R.id.future -> {
+                // Expand the Future walks list
+                past.state = Constants.ListState.DOWN
+            }
+            R.id.past -> {
+                // Expand the Past walks list
             }
         }
-        today.setOnClickListener(onclickListener)
-        tomorrow.setOnClickListener(onclickListener)
-        future.setOnClickListener(onclickListener)
-        past.setOnClickListener(onclickListener)
     }
+
+    /* UTIL FUNCTIONS */
 
     private fun colapseAll() {
         today.state = Constants.ListState.UP
@@ -79,6 +82,8 @@ class MainActivity : AppCompatActivity() {
         future.state = Constants.ListState.UP
         past.state = Constants.ListState.UP
     }
+
+    /* BAKED DATA */
 
     private fun getData(): HashMap<String, List<String>> {
 
